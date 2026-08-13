@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoLoop | Share. Reuse. Reduce waste.</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg eco-navbar sticky-top">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand eco-brand" href="#" data-page="home">
+      <i class="bi bi-recycle"></i> EcoLoop
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+        <li class="nav-item"><a class="nav-link eco-nav-link active" href="#" data-page="home"><i class="bi bi-house"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link eco-nav-link" href="#" data-page="browse"><i class="bi bi-grid"></i> Browse</a></li>
+        <li class="nav-item"><a class="nav-link eco-nav-link" href="#" data-page="upload"><i class="bi bi-cloud-upload"></i> Upload</a></li>
+        <li class="nav-item"><a class="nav-link eco-nav-link" href="#" data-page="requests"><i class="bi bi-clipboard-check"></i> My Requests</a></li>
+        <li class="nav-item"><a class="nav-link eco-nav-link" href="#" data-page="dashboard"><i class="bi bi-bar-chart"></i> Impact</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        <span id="navUserBox" class="d-none">
+          <span class="eco-user-chip"><i class="bi bi-person-circle"></i> <span id="navUserName"></span></span>
+          <button class="btn btn-sm btn-outline-secondary ms-2" id="logoutBtn">Log out</button>
+        </span>
+        <button class="btn btn-eco-green" id="loginNavBtn" data-page="auth">Login / Register</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HOME ================= -->
+<section id="page-home" class="page-section">
+  <div class="eco-hero text-center">
+    <div class="container py-5">
+      <span class="eco-sdg-badge"><i class="bi bi-infinity"></i> SDG 12 &middot; Responsible Consumption</span>
+      <h1 class="eco-h1 mt-3">Share. <span class="text-eco-green">Reuse.</span> Reduce waste.</h1>
+      <p class="eco-sub">Give unused campus items a second life — connect labs, students and faculty in one loop.</p>
+
+      <div class="row justify-content-center g-3 mt-4">
+        <div class="col-6 col-md-3">
+          <button class="eco-toggle-card w-100" data-page="browse"><i class="bi bi-journal-bookmark"></i><span>Borrow</span></button>
+        </div>
+        <div class="col-6 col-md-3">
+          <button class="eco-toggle-card active w-100" data-page="upload"><i class="bi bi-people"></i><span>Lend</span></button>
+        </div>
+        <div class="col-6 col-md-3">
+          <button class="eco-toggle-card w-100" data-page="upload"><i class="bi bi-heart"></i><span>Donate</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container py-5">
+    <h5 class="eco-eyebrow">Browse by category</h5>
+    <div class="row g-3" id="homeCategoryRow">
+      <!-- filled by JS: script.js -> renderHomeCategories() -->
+    </div>
+  </div>
+
+  <div class="eco-strip">
+    <div class="container py-4">
+      <div class="row text-center g-3">
+        <div class="col-6 col-md-3"><i class="bi bi-recycle"></i><div class="fw-semibold">Reduce Waste</div><small>Minimize landfill &amp; e-waste</small></div>
+        <div class="col-6 col-md-3"><i class="bi bi-leaf"></i><div class="fw-semibold">Save Resources</div><small>Reuse &amp; extend product life</small></div>
+        <div class="col-6 col-md-3"><i class="bi bi-people"></i><div class="fw-semibold">Build Community</div><small>Share. Connect. Collaborate.</small></div>
+        <div class="col-6 col-md-3"><i class="bi bi-bullseye"></i><div class="fw-semibold">Support SDG 12</div><small>Responsible Consumption</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= UPLOAD ================= -->
+<section id="page-upload" class="page-section d-none">
+  <div class="container py-5">
+    <h5 class="eco-eyebrow">Home / Upload</h5>
+    <h2 class="eco-h2 mb-4">Upload an item</h2>
+
+    <div class="eco-card p-4">
+      <form id="uploadForm" class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Item name</label>
+          <input type="text" class="form-control" id="itemName" placeholder="Enter item name" required>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="itemCategory" required>
+            <option value="" selected disabled>Select category</option>
+            <option>Chemicals</option>
+            <option>E-waste</option>
+            <option>Lab Equipment</option>
+            <option>Textbooks</option>
+            <option>Furniture</option>
+            <option>Bicycles</option>
+            <option>General Supplies</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Department</label>
+          <input type="text" class="form-control" id="itemDepartment" placeholder="e.g. IT, Chemical Engg">
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Condition</label>
+          <select class="form-select" id="itemCondition">
+            <option>New</option>
+            <option selected>Good</option>
+            <option>Fair</option>
+            <option>Needs Repair</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Quantity</label>
+          <input type="number" class="form-control" id="itemQuantity" value="1" min="1">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Expiry date <small class="text-muted">(chemicals only)</small></label>
+          <input type="date" class="form-control" id="itemExpiry">
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" id="itemDescription" rows="3" placeholder="Describe the item (brand, features, usage, etc.)"></textarea>
+        </div>
+
+        <div class="col-md-8">
+          <label class="form-label">Upload image</label>
+          <input type="file" class="form-control" id="itemImage" accept="image/png, image/jpeg">
+          <small class="text-muted">PNG, JPG up to 5MB</small>
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+          <button type="submit" class="btn btn-eco-green w-100">Submit item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BROWSE ================= -->
+<section id="page-browse" class="page-section d-none">
+  <div class="container py-5">
+    <h5 class="eco-eyebrow">Home / Browse</h5>
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+      <h2 class="eco-h2 mb-0">Available items</h2>
+      <div class="d-flex gap-2">
+        <select class="form-select" id="filterCategory">
+          <option value="">All categories</option>
+          <option>Chemicals</option>
+          <option>E-waste</option>
+          <option>Lab Equipment</option>
+          <option>Textbooks</option>
+          <option>Furniture</option>
+          <option>Bicycles</option>
+          <option>General Supplies</option>
+        </select>
+        <input type="text" class="form-control" id="filterSearch" placeholder="Search items...">
+      </div>
+    </div>
+
+    <div class="row g-4" id="browseGrid">
+      <!-- filled by JS -->
+    </div>
+    <div id="browseEmpty" class="text-center text-muted py-5 d-none">
+      <i class="bi bi-inbox fs-1"></i>
+      <p class="mt-2">No items found. Try a different filter, or be the first to list one!</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MY REQUESTS ================= -->
+<section id="page-requests" class="page-section d-none">
+  <div class="container py-5">
+    <h5 class="eco-eyebrow">Home / My Requests</h5>
+    <h2 class="eco-h2 mb-4">Requests I've made</h2>
+    <div class="eco-card p-0 overflow-hidden">
+      <table class="table eco-table mb-0">
+        <thead>
+          <tr><th>Item</th><th>Pickup location</th><th>Pickup date</th><th>Status</th></tr>
+        </thead>
+        <tbody id="myRequestsBody"></tbody>
+      </table>
+    </div>
+
+    <h2 class="eco-h2 mt-5 mb-4">Requests on my items</h2>
+    <div class="eco-card p-0 overflow-hidden">
+      <table class="table eco-table mb-0">
+        <thead>
+          <tr><th>Item</th><th>Requested by (ID)</th><th>Pickup date</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody id="ownerRequestsBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DASHBOARD ================= -->
+<section id="page-dashboard" class="page-section d-none">
+  <div class="container py-5">
+    <h5 class="eco-eyebrow">Home / Impact</h5>
+    <h2 class="eco-h2 mb-4">EcoLoop impact dashboard</h2>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="eco-stat-card"><i class="bi bi-box-seam"></i><div class="eco-stat-num" id="statTotal">0</div><div class="eco-stat-label">Items listed</div></div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="eco-stat-card"><i class="bi bi-arrow-repeat"></i><div class="eco-stat-num" id="statClaimed">0</div><div class="eco-stat-label">Items reused</div></div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="eco-stat-card"><i class="bi bi-hourglass-split"></i><div class="eco-stat-num" id="statPending">0</div><div class="eco-stat-label">Pending requests</div></div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="eco-stat-card"><i class="bi bi-diagram-3"></i><div class="eco-stat-num" id="statCategories">0</div><div class="eco-stat-label">Categories active</div></div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-5">
+        <div class="eco-card p-4 h-100">
+          <h6 class="fw-semibold mb-3">Items by category</h6>
+          <canvas id="categoryChart" height="220"></canvas>
+        </div>
+      </div>
+      <div class="col-md-7">
+        <div class="eco-card p-4 h-100">
+          <h6 class="fw-semibold mb-3">Recently listed</h6>
+          <ul class="list-group list-group-flush" id="recentList"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= AUTH ================= -->
+<section id="page-auth" class="page-section d-none">
+  <div class="container py-5" style="max-width:480px;">
+    <div class="eco-card p-4">
+      <ul class="nav nav-pills eco-auth-tabs mb-4" id="authTabs">
+        <li class="nav-item flex-fill text-center"><a class="nav-link active" data-tab="login" href="#">Login</a></li>
+        <li class="nav-item flex-fill text-center"><a class="nav-link" data-tab="register" href="#">Register</a></li>
+      </ul>
+
+      <form id="loginForm">
+        <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="loginEmail" required></div>
+        <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="loginPassword" required></div>
+        <button class="btn btn-eco-green w-100" type="submit">Login</button>
+      </form>
+
+      <form id="registerForm" class="d-none">
+        <div class="mb-3"><label class="form-label">Full name</label><input type="text" class="form-control" id="regName" required></div>
+        <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="regEmail" required></div>
+        <div class="mb-3"><label class="form-label">Department</label><input type="text" class="form-control" id="regDepartment"></div>
+        <div class="mb-3">
+          <label class="form-label">Role</label>
+          <select class="form-select" id="regRole">
+            <option value="student" selected>Student</option>
+            <option value="faculty">Faculty</option>
+          </select>
+        </div>
+        <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="regPassword" required></div>
+        <button class="btn btn-eco-green w-100" type="submit">Create account</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REQUEST MODAL ================= -->
+<div class="modal fade" id="requestModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content eco-card">
+      <div class="modal-header border-0">
+        <h5 class="modal-title"><i class="bi bi-clipboard-check"></i> Request confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-1"><strong>Item:</strong> <span id="reqItemName"></span></p>
+        <input type="hidden" id="reqItemId">
+        <div class="mb-3 mt-3">
+          <label class="form-label">Pickup location</label>
+          <input type="text" class="form-control" id="reqPickupLocation" placeholder="e.g. Main Library, Ground Floor" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Pickup date</label>
+          <input type="date" class="form-control" id="reqPickupDate" required>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-eco-green w-100" id="confirmRequestBtn">Confirm request</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div id="ecoToast" class="toast align-items-center text-white border-0" role="alert">
+    <div class="d-flex">
+      <div class="toast-body" id="ecoToastBody">Message</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+    </div>
+  </div>
+</div>
+
+<footer class="eco-footer text-center py-3">
+  <small>SSN EcoLoop &middot; Closing the Loop, Building a Sustainable Campus &middot; SDG 12</small>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
