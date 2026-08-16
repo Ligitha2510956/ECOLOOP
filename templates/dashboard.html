@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EcoLoop — Campus Resource Reuse</title>
+<style>
+  :root{
+    --bg:#F7F7F4;
+    --card:#FFFFFF;
+    --ink:#1F2420;
+    --ink-soft:#6B6F68;
+    --green:#2C6E49;
+    --green-dark:#1F4D34;
+    --amber:#C68A2E;
+    --line:#E4E2DA;
+    --red:#B3492F;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.5;
+  }
+  h1,h2,h3{margin:0; font-weight:700; color:var(--green-dark);}
+  p{margin:0;}
+  .wrap{max-width:1040px; margin:0 auto; padding:0 24px;}
+
+  .collegebar{background:var(--green-dark); color:#EFEEE5; font-size:12.5px; text-align:center; padding:6px 12px; letter-spacing:.02em;}
+
+  header{background:var(--card); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:20;}
+  .navbar{display:flex; align-items:center; justify-content:space-between; padding:14px 24px; max-width:1040px; margin:0 auto;}
+  .logo{display:flex; align-items:center; gap:9px; font-weight:800; font-size:18px; color:var(--green-dark); cursor:pointer;}
+  .logo .crest{width:30px; height:30px; border-radius:7px; background:var(--green); color:#fff; display:flex; align-items:center; justify-content:center; font-size:15px;}
+  nav{display:flex; gap:4px;}
+  nav button{
+    background:none; border:none; font-size:14px; font-weight:600; color:var(--ink-soft);
+    padding:8px 14px; border-radius:6px; cursor:pointer;
+  }
+  nav button:hover{background:var(--bg);}
+  nav button.active{color:var(--green-dark); background:#EAF2EC;}
+  .menu-toggle{display:none; background:none; border:1px solid var(--line); border-radius:6px; padding:8px 10px; cursor:pointer;}
+
+  .page{display:none; padding:40px 0 64px;}
+  .page.active{display:block;}
+  .eyebrow{font-size:12px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--amber); margin-bottom:8px;}
+  .page-head{margin-bottom:28px;}
+  .page-head h2{font-size:26px;}
+  .page-head p{color:var(--ink-soft); margin-top:6px; font-size:15px;}
+
+  .btn{
+    display:inline-block; font-size:14px; font-weight:700; padding:11px 20px;
+    border-radius:6px; border:1px solid var(--green); cursor:pointer; text-decoration:none;
+  }
+  .btn-primary{background:var(--green); color:#fff;}
+  .btn-primary:hover{background:var(--green-dark);}
+  .btn-outline{background:none; color:var(--green-dark);}
+  .btn-outline:hover{background:#EAF2EC;}
+  .btn-block{width:100%; text-align:center;}
+  .btn-sm{padding:8px 12px; font-size:13px; border-radius:5px;}
+
+  .hero{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:40px 36px; text-align:center;}
+  .hero h1{font-size:32px; line-height:1.2;}
+  .hero p{color:var(--ink-soft); margin-top:12px; font-size:16px; max-width:52ch; margin-left:auto; margin-right:auto;}
+
+  .action-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:28px;}
+  .action-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:26px 18px;
+    text-align:center; cursor:pointer; transition:border-color .15s, transform .15s;
+  }
+  .action-card:hover{border-color:var(--green); transform:translateY(-2px);}
+  .action-card .ic{width:44px; height:44px; border-radius:50%; background:#EAF2EC; color:var(--green-dark);
+    display:flex; align-items:center; justify-content:center; font-size:20px; margin:0 auto;}
+  .action-card h3{font-size:16px; margin-top:12px; letter-spacing:.03em;}
+  .action-card p{font-size:12.5px; color:var(--ink-soft); margin-top:4px;}
+
+  .cat-showcase{margin-top:40px;}
+  .cat-showcase .page-head{margin-bottom:16px;}
+  .cat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .cat-card{
+    position:relative; border-radius:var(--radius); overflow:hidden; height:130px; cursor:pointer;
+    border:1px solid var(--line);
+  }
+  .cat-card img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .2s;}
+  .cat-card:hover img{transform:scale(1.05);}
+  .cat-card .overlay{
+    position:absolute; inset:0; background:linear-gradient(180deg, rgba(31,36,32,0) 40%, rgba(19,26,20,.78) 100%);
+    display:flex; flex-direction:column; justify-content:flex-end; padding:12px 14px;
+  }
+  .cat-card .overlay h4{color:#fff; font-size:14.5px; font-weight:700;}
+  .cat-card .overlay span{color:#DCE7DE; font-size:11.5px;}
+
+  .why-row{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:40px;}
+  .why-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:20px;}
+  .why-card .k{font-size:22px;}
+  .why-card h4{font-size:15px; margin-top:10px;}
+  .why-card p{font-size:13px; color:var(--ink-soft); margin-top:6px;}
+
+  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
+  .chip{
+    font-size:13px; font-weight:600; padding:7px 14px; border-radius:20px; border:1px solid var(--line);
+    background:var(--card); cursor:pointer; color:var(--ink-soft);
+  }
+  .chip.active{background:var(--green); border-color:var(--green); color:#fff;}
+  .item-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .item-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column;}
+  .item-card .thumb{height:130px; width:100%; object-fit:cover; display:block; background:var(--bg);}
+  .item-card .body{padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1;}
+  .item-card .top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .item-card h4{font-size:15px; color:var(--ink); font-weight:700;}
+  .badge{font-size:11px; font-weight:700; padding:3px 8px; border-radius:4px; white-space:nowrap;}
+  .badge-Excellent{background:#E4F1E8; color:var(--green-dark);}
+  .badge-Good{background:#FBF0DD; color:var(--amber);}
+  .badge-Fair{background:#F8E5DF; color:var(--red);}
+  .item-card .meta{font-size:12.5px; color:var(--ink-soft);}
+  .item-card .expiry{font-size:12px; color:var(--red); font-weight:600;}
+  .item-card .row-actions{margin-top:auto; display:flex; gap:8px; padding-top:6px;}
+  .empty{grid-column:1/-1; text-align:center; padding:40px; color:var(--ink-soft); font-size:14px;}
+
+  .two-col{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:24px;}
+  .panel h3{font-size:17px;}
+  .panel .sub{font-size:13.5px; color:var(--ink-soft); margin-top:4px;}
+  .field{margin-top:14px;}
+  .field label{display:block; font-size:12.5px; font-weight:700; color:var(--ink-soft); margin-bottom:5px;}
+  .field input, .field select, .field textarea{
+    width:100%; padding:10px 11px; border:1px solid var(--line); border-radius:6px; font-size:14px;
+    background:#fff; color:var(--ink); font-family:inherit;
+  }
+  .field textarea{min-height:70px; resize:vertical;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .mode-toggle{display:flex; gap:8px; margin-top:14px;}
+  .mode-btn{flex:1; text-align:center; padding:10px; border:1px solid var(--line); border-radius:6px; font-size:13.5px; font-weight:700; cursor:pointer; color:var(--ink-soft);}
+  .mode-btn.active{border-color:var(--green); background:#EAF2EC; color:var(--green-dark);}
+  .confirm-row{display:flex; justify-content:space-between; font-size:14px; padding:8px 0; border-bottom:1px solid var(--line);}
+  .confirm-row span:first-child{color:var(--ink-soft);}
+  .confirm-row span:last-child{font-weight:600;}
+
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+  .stat{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:18px; text-align:center;}
+  .stat .n{font-size:24px; font-weight:800; color:var(--green-dark);}
+  .stat .l{font-size:12.5px; color:var(--ink-soft); margin-top:2px;}
+  .board{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); margin-top:24px;}
+  .board-row{display:grid; grid-template-columns:28px 1fr 80px; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--line);}
+  .board-row:last-child{border-bottom:none;}
+  .board-row .rank{font-weight:800; color:var(--amber);}
+  .bar-track{height:7px; background:var(--bg); border-radius:4px; overflow:hidden; margin-top:6px;}
+  .bar-fill{height:100%; background:var(--green);}
+  .board-row .pts{text-align:right; font-size:13px; color:var(--ink-soft); font-weight:600;}
+
+  .fb-grid{display:grid; grid-template-columns:1fr 1.2fr; gap:20px;}
+  .stars{display:flex; gap:5px; margin-top:4px;}
+  .star{font-size:22px; cursor:pointer; color:var(--line); user-select:none;}
+  .star.on{color:var(--amber);}
+  .fb-wall{display:flex; flex-direction:column; gap:12px; max-height:520px; overflow-y:auto;}
+  .fb-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:16px;}
+  .fb-card .frow{display:flex; justify-content:space-between; align-items:center;}
+  .fb-card .who{font-weight:700; font-size:14px;}
+  .fb-card .role{font-size:11.5px; color:var(--green); font-weight:600;}
+  .fb-card .stars-static{color:var(--amber); font-size:13px;}
+  .fb-card p{font-size:13.5px; color:var(--ink-soft); margin-top:8px;}
+
+  .about-grid{display:grid; grid-template-columns:1.2fr 0.8fr; gap:28px;}
+  .about-grid p{color:var(--ink-soft); font-size:15px; margin-top:10px;}
+  .contact-list{display:flex; flex-direction:column; gap:12px; margin-top:12px;}
+  .contact-list a{text-decoration:none; color:var(--ink); font-size:14px;}
+
+  footer{border-top:1px solid var(--line); text-align:center; padding:24px; font-size:12.5px; color:var(--ink-soft);}
+
+  .toast{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(16px); opacity:0;
+    background:var(--green-dark); color:#fff; padding:12px 20px; border-radius:6px; font-size:13.5px;
+    transition:opacity .2s, transform .2s; z-index:100; pointer-events:none;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+
+  .request-status{
+    display:flex;align-items:flex-start;gap:12px;margin-top:16px;padding:14px;
+    border:1px solid #cce8d4;background:#edf9f1;border-radius:8px;color:var(--green-dark);
+  }
+  .request-status-icon{
+    width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;
+    display:grid;place-items:center;font-weight:800;flex:none;
+  }
+  .request-status p{font-size:12.5px;color:var(--ink-soft);margin-top:3px}
+  .request-list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+  .request-row{
+    display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;
+    border:1px solid var(--line);border-radius:7px;padding:13px 14px;background:#fff;
+  }
+  .request-row .name{font-weight:700;font-size:14px}
+  .request-row .meta{font-size:12px;color:var(--ink-soft);margin-top:3px}
+  .request-badge{
+    font-size:11px;font-weight:800;padding:5px 9px;border-radius:20px;
+    background:#EAF2EC;color:var(--green-dark);white-space:nowrap;
+  }
+
+  @media (max-width:860px){
+    nav{display:none;}
+    nav.open{display:flex; position:absolute; top:56px; left:0; right:0; background:var(--card); border-bottom:1px solid var(--line); flex-direction:column; padding:8px; gap:2px;}
+    .menu-toggle{display:block;}
+    .stat-row{grid-template-columns:1fr 1fr;}
+    .action-row, .cat-grid, .why-row{grid-template-columns:1fr 1fr;}
+    .item-grid{grid-template-columns:1fr 1fr;}
+    .two-col, .fb-grid, .about-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:520px){
+    .stat-row, .action-row, .cat-grid, .why-row, .item-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:25px;}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <div class="logo" data-page="home">
+      <span class="crest">♻</span> EcoLoop
+    </div>
+    <button class="menu-toggle" id="menuToggle">☰</button>
+    <nav id="navLinks">
+      <button data-page="home" class="active">Home</button>
+      <button data-page="browse">Browse</button>
+      <button data-page="lend">Lend / Borrow</button>
+      <button data-page="impact">Impact</button>
+      <button data-page="feedback">Feedback</button>
+      <button data-page="about">About</button>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HOME -->
+  <section class="page active" id="page-home">
+    <div class="hero">
+<h1>Share what you're not using.<br>Find what you need.</h1>
+      <p>EcoLoop connects labs, departments and students at SSN so unused chemicals, equipment, textbooks and e-waste get reused instead of thrown away.</p>
+    </div>
+
+    <div class="action-row">
+      <div class="action-card" data-lend-mode="Lend" data-page="lend">
+        <div class="ic">↗</div>
+        <h3>LEND</h3>
+        <p>Give an item out and get it back later.</p>
+      </div>
+      <div class="action-card" data-page="browse">
+        <div class="ic">↘</div>
+        <h3>BORROW</h3>
+        <p>Find something another department already has.</p>
+      </div>
+      <div class="action-card" data-lend-mode="Donate" data-page="lend">
+        <div class="ic">♡</div>
+        <h3>DONATE</h3>
+        <p>Give an item away for good — no return needed.</p>
+      </div>
+    </div>
+
+    <div class="cat-showcase">
+      <div class="page-head">
+        <div class="eyebrow">Explore</div>
+        <h2 style="font-size:20px;">Browse by category</h2>
+      </div>
+      <div class="cat-grid" id="catShowcase"></div>
+    </div>
+
+    <div class="why-row">
+      <div class="why-card"><div class="k">🕒</div><h4>Under 3 clicks</h4><p>Listing an item is quick enough to actually use between classes.</p></div>
+      <div class="why-card"><div class="k">🔒</div><h4>Owner approves every request</h4><p>Nothing changes hands until the listing department confirms it.</p></div>
+      <div class="why-card"><div class="k">📊</div><h4>Real impact numbers</h4><p>Every handover is counted — kilograms diverted, rupees saved.</p></div>
+    </div>
+  </section>
+
+  <!-- BROWSE -->
+  <section class="page" id="page-browse">
+    <div class="page-head">
+      <div class="eyebrow">Catalogue</div>
+      <h2>Browse what's available</h2>
+      <p>Filter by category or condition. Tap Request to send a claim.</p>
+    </div>
+    <div class="chips" id="catChips"></div>
+    <div class="chips" id="condChips"></div>
+    <div class="item-grid" id="itemGrid"></div>
+  </section>
+
+  <!-- LEND / BORROW -->
+  <section class="page" id="page-lend">
+    <div class="page-head">
+      <div class="eyebrow">Give &amp; receive</div>
+      <h2>List an item, or confirm a request</h2>
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <h3>List an item</h3>
+        <p class="sub">Help someone skip a purchase.</p>
+        <div class="mode-toggle" id="modeToggle">
+          <div class="mode-btn active" data-mode="Lend">Lend (want it back)</div>
+          <div class="mode-btn" data-mode="Donate">Donate (give away)</div>
+        </div>
+        <form id="uploadForm">
+          <div class="field"><label>Item name</label><input id="iName" required placeholder="e.g. Arduino Uno R3"></div>
+          <div class="field-row">
+            <div class="field"><label>Category</label>
+              <select id="iCat"><option>Textbooks</option><option>Lab Equipment</option><option>Chemicals</option><option>E-waste</option><option>Furniture</option><option>Bicycles</option></select>
+            </div>
+            <div class="field"><label>Department</label>
+              <select id="iDept"><option>Computer Science</option><option>Chemical Engineering</option><option>Biotechnology</option><option>Mechanical</option><option>ECE</option><option>General / Hostel</option></select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Condition</label><select id="iCond"><option>Excellent</option><option>Good</option><option>Fair</option></select></div>
+            <div class="field"><label>Expiry (if any)</label><input id="iExp" type="date"></div>
+          </div>
+          <div class="field"><label>Description</label><textarea id="iDesc" placeholder="Brand, quantity, notes…"></textarea></div>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top:16px;">Submit item</button>
+        </form>
+      </div>
+      <div class="panel">
+        <h3>Request confirmation</h3>
+        <p class="sub" id="reqSub">Go to Browse and tap Request on an item to see it here.</p>
+        <div id="confirmBox" style="display:none;">
+          <div class="confirm-row"><span>Item</span><span id="cItem">—</span></div>
+          <div class="confirm-row"><span>Requested from</span><span id="cDept">—</span></div>
+          <div class="confirm-row"><span>Pickup location</span><span>Department stores, ground floor</span></div>
+          <div class="field"><label>Pickup date</label><input type="date" id="cDate"></div>
+          <button class="btn btn-primary btn-block" id="confirmBtn" style="margin-top:14px;">Confirm request</button>
+          <div id="requestStatus" class="request-status" style="display:none;">
+            <div class="request-status-icon">✓</div>
+            <div>
+              <strong>Request submitted</strong>
+              <p id="requestStatusText">Your request has been sent to the item owner.</p>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="panel" style="margin-top:20px;">
+      <h3>My requests</h3>
+      <p class="sub">Requests you have submitted will appear here.</p>
+      <div id="myRequests" class="request-list">
+        <div class="empty" style="padding:22px;">No requests yet.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT -->
+  <section class="page" id="page-impact">
+    <div class="page-head">
+      <div class="eyebrow">Impact dashboard</div>
+      <h2>Small actions, tracked in real numbers</h2>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><div class="n">312</div><div class="l">Items reused</div></div>
+      <div class="stat"><div class="n">86 kg</div><div class="l">E-waste diverted</div></div>
+      <div class="stat"><div class="n">₹1.4L</div><div class="l">Cost saved</div></div>
+      <div class="stat"><div class="n">41</div><div class="l">Chemicals saved from expiry</div></div>
+    </div>
+    <div class="page-head" style="margin-top:28px; margin-bottom:0;">
+      <h2 style="font-size:18px;">Department leaderboard</h2>
+    </div>
+    <div class="board" id="boardBody"></div>
+  </section>
+
+  <!-- FEEDBACK -->
+  <section class="page" id="page-feedback">
+    <div class="page-head">
+      <div class="eyebrow">Tell us what's working</div>
+      <h2>Feedback from the SSN community</h2>
+    </div>
+    <div class="fb-grid">
+      <div class="panel">
+        <h3>Leave a review</h3>
+        <p class="sub">Visible to everyone who opens this app.</p>
+        <div class="field"><label>Name</label><input id="fName" placeholder="e.g. Priya S."></div>
+        <div class="field"><label>You are a</label><select id="fRole"><option>Student</option><option>Faculty</option><option>Lab In-charge</option></select></div>
+        <div class="field"><label>Rating</label>
+          <div class="stars" id="starRow">
+            <span class="star" data-v="1">★</span><span class="star" data-v="2">★</span><span class="star" data-v="3">★</span><span class="star" data-v="4">★</span><span class="star" data-v="5">★</span>
+          </div>
+        </div>
+        <div class="field"><label>Comment</label><textarea id="fComment" placeholder="What would make this more useful?"></textarea></div>
+        <button class="btn btn-primary btn-block" id="fbSubmit" style="margin-top:14px;">Post feedback</button>
+      </div>
+      <div class="fb-wall" id="fbWall"><p style="color:var(--ink-soft); font-size:13px;">Loading feedback…</p></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="page" id="page-about">
+    <div class="page-head">
+      <div class="eyebrow">Why this exists</div>
+      <h2>Built by students who kept buying what the lab next door already had.</h2>
+    </div>
+    <div class="about-grid">
+      <div>
+        <p>Talking to 15 students and 2 faculty across SSN, the same story kept coming up: usable items thrown away, expired chemicals nobody knew existed, duplicate purchases every semester. So we built one platform for chemicals, e-waste, and everyday things like textbooks, furniture and bicycles.</p>
+        <p>It stays purely digital — no new hardware, no extra budget, and listing an item takes under three clicks.</p>
+      </div>
+      <div class="panel">
+        <h3 style="font-size:16px;">Contact</h3>
+        <div class="contact-list">
+          <a href="mailto:ecoloop@ssn.edu.in">✉️ ecoloop@ssn.edu.in</a>
+          <a data-page="lend">📍 SSN College of Engineering, Kalavakkam</a>
+          <a data-page="feedback">💬 Leave feedback — we read every note</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>EcoLoop — student project for SDG 12, SSN College of Engineering</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- Product images ----------------
+   Real photographs from Unsplash. Each item gets a relevant photo. */
+const IMG = {
+  books: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=900&q=85',
+  books2: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=900&q=85',
+  laptop: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=85',
+  backpack: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=85',
+  bicycle: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=900&q=85',
+  lab: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=900&q=85',
+  electronics: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=85',
+  arduino: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=85',
+  microscope: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=900&q=85',
+  oscilloscope: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=85',
+  furniture: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=900&q=85',
+  desk: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=85',
+  chemistry: 'https://images.unsplash.com/photo-1532634993-15f421e42ec0?auto=format&fit=crop&w=900&q=85'
+};
+
+const CAT_IMG = {
+  'Textbooks': IMG.books,
+  'Lab Equipment': IMG.microscope,
+  'Chemicals': IMG.chemistry,
+  'E-waste': IMG.electronics,
+  'Furniture': IMG.furniture,
+  'Bicycles': IMG.bicycle
+};
+
+
+/* ---------------- Page navigation ---------------- */
+function goToPage(name){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.page === name));
+  document.getElementById('navLinks').classList.remove('open');
+  window.scrollTo({top:0, behavior:'instant'});
+}
+document.querySelectorAll('[data-page]').forEach(el=>{
+  el.addEventListener('click', () => {
+    if(el.dataset.lendMode){ setLendMode(el.dataset.lendMode); }
+    goToPage(el.dataset.page);
+  });
+});
+document.getElementById('menuToggle').addEventListener('click', ()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+/* ---------------- Data ---------------- */
+const ITEMS = [
+  {id:'EC-014', name:'Digital Microscope', cat:'Lab Equipment', dept:'Biotechnology', cond:'Excellent', qty:1, img:IMG.microscope},
+  {id:'EC-027', name:'Sodium Hydroxide, 500ml', cat:'Chemicals', dept:'Chemical Engineering', cond:'Good', qty:3, expiry:'14 days', img:IMG.chemistry},
+  {id:'EC-041', name:'Organic Chemistry, 6th Ed.', cat:'Textbooks', dept:'Chemical Engineering', cond:'Good', qty:2, img:IMG.books},
+  {id:'EC-052', name:'Office Chair (mesh back)', cat:'Furniture', dept:'General / Hostel', cond:'Fair', qty:4, img:IMG.furniture},
+  {id:'EC-063', name:'Arduino Uno R3 kit', cat:'E-waste', dept:'ECE', cond:'Excellent', qty:1, img:IMG.arduino},
+  {id:'EC-071', name:'Hybrid Bicycle, 21-speed', cat:'Bicycles', dept:'General / Hostel', cond:'Good', qty:1, img:IMG.bicycle},
+  {id:'EC-084', name:'Digital Storage Oscilloscope', cat:'Lab Equipment', dept:'ECE', cond:'Good', qty:1, img:IMG.oscilloscope},
+  {id:'EC-092', name:'Ethanol, 1L (lab grade)', cat:'Chemicals', dept:'Biotechnology', cond:'Good', qty:2, expiry:'30 days', img:IMG.chemistry},
+  {id:'EC-103', name:'Data Structures — Cormen', cat:'Textbooks', dept:'Computer Science', cond:'Excellent', qty:1, img:IMG.books2},
+  {id:'EC-118', name:'Study Desk, foldable', cat:'Furniture', dept:'General / Hostel', cond:'Fair', qty:2, img:IMG.desk},
+  {id:'EC-126', name:'Old CRT Monitor', cat:'E-waste', dept:'Mechanical', cond:'Fair', qty:3, img:IMG.laptop},
+  {id:'EC-134', name:'3D Printer filament, PLA', cat:'Lab Equipment', dept:'Mechanical', cond:'Excellent', qty:5, img:IMG.electronics}
+];
+const CATS = ['All','Textbooks','Lab Equipment','Chemicals','E-waste','Furniture','Bicycles'];
+const CONDS = ['All','Excellent','Good','Fair'];
+const LEADERBOARD = [
+  {dept:'Biotechnology', pts:940}, {dept:'Chemical Engineering', pts:860}, {dept:'ECE', pts:715},
+  {dept:'Computer Science', pts:690}, {dept:'Mechanical', pts:520}, {dept:'General / Hostel', pts:410},
+];
+const SEED_FEEDBACK = [
+  {name:'CSE Student', role:'Student', rating:5, comment:"This feels a lot more useful for daily college life than just focusing on lab equipment."},
+  {name:'Biotech Student', role:'Student', rating:5, comment:"Seeing exactly how much waste we save on a dashboard is genuinely motivating."},
+  {name:'Lab In-charge', role:'Faculty', rating:4, comment:"Good idea for reducing duplicate purchases. Would like clearer approval steps for chemicals."},
+  {name:'Mechanical Student', role:'Student', rating:4, comment:"A leaderboard rewarding departments that save the most would be fun."},
+  {name:'ECE Student', role:'Student', rating:3, comment:"Keep the UI simple — most of us will use this between classes on our phones."},
+];
+
+let activeCat = 'All';
+let activeCond = 'All';
+let selectedItem = null;
+let lendMode = 'Lend';
+
+/* ---------------- Home: category showcase ---------------- */
+function renderCatShowcase(){
+  const grid = document.getElementById('catShowcase');
+  grid.innerHTML = CATS.filter(c=>c!=='All').map(c=>{
+    const count = ITEMS.filter(i=>i.cat===c).length;
+    return `<div class="cat-card" data-cat="${c}">
+      <img src="${CAT_IMG[c]}" alt="${c}" loading="lazy">
+      <div class="overlay"><h4>${c}</h4><span>${count} listed</span></div>
+    </div>`;
+  }).join('');
+  grid.querySelectorAll('.cat-card').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      activeCat = el.dataset.cat; activeCond = 'All';
+      renderChips(); renderItems();
+      goToPage('browse');
+    });
+  });
+}
+
+/* ---------------- Browse chips + items ---------------- */
+function renderChips(){
+  document.getElementById('catChips').innerHTML = CATS.map(c=>
+    `<div class="chip ${activeCat===c?'active':''}" data-cat="${c}">${c}</div>`).join('');
+  document.getElementById('condChips').innerHTML = CONDS.map(c=>
+    `<div class="chip ${activeCond===c?'active':''}" data-cond="${c}">${c==='All'?'All conditions':c}</div>`).join('');
+
+  document.querySelectorAll('#catChips [data-cat]').forEach(el=>{
+    el.addEventListener('click', ()=>{ activeCat = el.dataset.cat; renderChips(); renderItems(); });
+  });
+  document.querySelectorAll('#condChips [data-cond]').forEach(el=>{
+    el.addEventListener('click', ()=>{ activeCond = el.dataset.cond; renderChips(); renderItems(); });
+  });
+}
+
+function renderItems(){
+  const grid = document.getElementById('itemGrid');
+  let list = ITEMS.slice();
+  if(activeCat!=='All') list = list.filter(i=>i.cat===activeCat);
+  if(activeCond!=='All') list = list.filter(i=>i.cond===activeCond);
+  if(list.length===0){
+    grid.innerHTML = `<div class="empty">Nothing matches — try another filter, or list an item on the Lend / Borrow page.</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(i=>`
+    <div class="item-card">
+      <img class="thumb" src="${i.img || CAT_IMG[i.cat]}" alt="${i.name}" loading="lazy">
+      <div class="body">
+        <div class="top"><h4>${i.name}</h4><span class="badge badge-${i.cond}">${i.cond}</span></div>
+        <div class="meta">${i.dept} · Qty ${i.qty}</div>
+        ${i.expiry ? `<div class="expiry">Expires in ${i.expiry}</div>` : ''}
+        <div class="row-actions">
+          <button class="btn btn-primary btn-sm" data-req="${i.id}" style="flex:1;">Request</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  grid.querySelectorAll('[data-req]').forEach(btn=>{
+    btn.addEventListener('click', ()=>requestItem(btn.dataset.req));
+  });
+}
+
+function requestItem(id){
+  selectedItem = ITEMS.find(i=>i.id===id);
+  document.getElementById('reqSub').style.display = 'none';
+  document.getElementById('confirmBox').style.display = 'block';
+  document.getElementById('cItem').textContent = selectedItem.name;
+  document.getElementById('cDept').textContent = selectedItem.dept;
+  goToPage('lend');
+}
+
+document.getElementById('confirmBtn').addEventListener('click', async ()=>{
+  if(!selectedItem) return;
+
+  const pickupDate = document.getElementById('cDate').value;
+  if(!pickupDate){
+    showToast('Please choose a pickup date.');
+    document.getElementById('cDate').focus();
+    return;
+  }
+
+  const btn = document.getElementById('confirmBtn');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try{
+    const response = await fetch('/api/requests', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        item_id:selectedItem.id,
+        item_name:selectedItem.name,
+        department:selectedItem.dept,
+        pickup_date:pickupDate
+      })
+    });
+
+    const data = await response.json();
+    if(!response.ok) throw new Error(data.error || 'Request could not be submitted.');
+
+    document.getElementById('requestStatus').style.display = 'flex';
+    document.getElementById('requestStatusText').textContent =
+      `Request ${data.request_id} submitted. ${selectedItem.dept} can now review it.`;
+
+    document.getElementById('confirmBox').style.display = 'none';
+    document.getElementById('reqSub').style.display = 'block';
+    document.getElementById('reqSub').textContent =
+      `Request ${data.request_id} submitted successfully. You can see it under My requests.`;
+
+    showToast('Request submitted successfully ✓');
+    await loadMyRequests();
+  }catch(err){
+    console.error(err);
+    showToast(err.message || 'Could not submit request.');
+  }finally{
+    btn.disabled = false;
+    btn.textContent = 'Confirm request';
+  }
+});
+
+async function loadMyRequests(){
+  const box = document.getElementById('myRequests');
+  if(!box) return;
+  try{
+    const response = await fetch('/api/requests');
+    if(!response.ok) throw new Error('Unable to load requests');
+    const data = await response.json();
+
+    if(!data.requests.length){
+      box.innerHTML = '<div class="empty" style="padding:22px;">No requests yet.</div>';
+      return;
+    }
+
+    box.innerHTML = data.requests.map(r => `
+      <div class="request-row">
+        <div>
+          <div class="name">${escapeHtml(r.item_name)}</div>
+          <div class="meta">${escapeHtml(r.department)} · Pickup: ${escapeHtml(r.pickup_date)} · ${escapeHtml(r.request_id)}</div>
+        </div>
+        <span class="request-badge">${escapeHtml(r.status)}</span>
+      </div>
+    `).join('');
+  }catch(err){
+    console.error('Request load error:', err);
+  }
+}
+
+/* ---------------- Lend / Donate mode toggle ---------------- */
+function setLendMode(mode){
+  lendMode = mode;
+  document.querySelectorAll('#modeToggle .mode-btn').forEach(b=>{
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+}
+document.querySelectorAll('#modeToggle .mode-btn').forEach(b=>{
+  b.addEventListener('click', ()=>setLendMode(b.dataset.mode));
+});
+
+document.getElementById('uploadForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  const name = document.getElementById('iName').value.trim();
+  if(!name) return;
+  const cat = document.getElementById('iCat').value;
+  const dept = document.getElementById('iDept').value;
+  const cond = document.getElementById('iCond').value;
+  ITEMS.unshift({id:'EC-'+(140+ITEMS.length), name, cat, dept, cond, qty:1, img: CAT_IMG[cat]});
+  activeCat = cat; activeCond = 'All';
+  renderChips(); renderItems(); renderCatShowcase();
+  showToast(`"${name}" listed as ${lendMode.toLowerCase()} under ${cat}.`);
+  e.target.reset();
+  goToPage('browse');
+});
+
+/* ---------------- Impact leaderboard ---------------- */
+function renderBoard(){
+  const max = Math.max(...LEADERBOARD.map(d=>d.pts));
+  const sorted = LEADERBOARD.slice().sort((a,b)=>b.pts-a.pts);
+  document.getElementById('boardBody').innerHTML = sorted.map((d,i)=>`
+    <div class="board-row">
+      <div class="rank">${i+1}</div>
+      <div><div style="font-weight:700; font-size:14.5px;">${d.dept}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${(d.pts/max*100).toFixed(0)}%"></div></div>
+      </div>
+      <div class="pts">${d.pts} pts</div>
+    </div>
+  `).join('');
+}
+
+/* ---------------- Feedback ---------------- */
+let selectedRating = 0;
+document.querySelectorAll('#starRow .star').forEach(s=>{
+  s.addEventListener('click', ()=>{
+    selectedRating = parseInt(s.dataset.v);
+    document.querySelectorAll('#starRow .star').forEach(x=>{
+      x.classList.toggle('on', parseInt(x.dataset.v) <= selectedRating);
+    });
+  });
+});
+function starString(n){ return '★★★★★☆☆☆☆☆'.slice(5-n,10-n); }
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function fbCard(f){
+  return `<div class="fb-card">
+    <div class="frow">
+      <div><div class="who">${escapeHtml(f.name||'Anonymous')}</div><div class="role">${escapeHtml(f.role||'Community member')}</div></div>
+      <div class="stars-static">${starString(f.rating||4)}</div>
+    </div>
+    <p>${escapeHtml(f.comment||'')}</p>
+  </div>`;
+}
+async function loadFeedback(){
+  const wall = document.getElementById('fbWall');
+  let stored = [];
+  try{
+    const list = await window.storage.list('feedback:', true);
+    if(list && list.keys && list.keys.length){
+      const results = await Promise.all(list.keys.map(k => window.storage.get(k, true).catch(()=>null)));
+      stored = results.filter(Boolean).map(r=>{ try{ return JSON.parse(r.value); } catch(e){ return null; } }).filter(Boolean);
+    }
+  } catch(err){ console.error('Feedback load error:', err); }
+  const combined = [...stored.reverse(), ...SEED_FEEDBACK];
+  wall.innerHTML = combined.map(fbCard).join('');
+}
+document.getElementById('fbSubmit').addEventListener('click', async ()=>{
+  const name = document.getElementById('fName').value.trim() || 'Anonymous';
+  const role = document.getElementById('fRole').value;
+  const comment = document.getElementById('fComment').value.trim();
+  if(!comment){ showToast('Add a short comment before posting.'); return; }
+  const entry = {name, role, rating: selectedRating || 4, comment, ts: Date.now()};
+  const btn = document.getElementById('fbSubmit');
+  btn.disabled = true; btn.textContent = 'Posting…';
+  try{
+    const result = await window.storage.set('feedback:'+entry.ts, JSON.stringify(entry), true);
+    if(!result) throw new Error('no result');
+    showToast('Thanks — your feedback is visible to everyone.');
+    document.getElementById('fComment').value = '';
+    document.getElementById('fName').value = '';
+    selectedRating = 0;
+    document.querySelectorAll('#starRow .star').forEach(x=>x.classList.remove('on'));
+    await loadFeedback();
+  } catch(err){
+    console.error('Feedback save error:', err);
+    showToast("Couldn't save right now — shown locally only.");
+    SEED_FEEDBACK.unshift(entry);
+    await loadFeedback();
+  } finally {
+    btn.disabled = false; btn.textContent = 'Post feedback';
+  }
+});
+
+/* ---------------- Toast ---------------- */
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+/* ---------------- Init ---------------- */
+renderCatShowcase();
+renderChips();
+renderItems();
+renderBoard();
+loadFeedback();
+</script>
+</body>
+</html>

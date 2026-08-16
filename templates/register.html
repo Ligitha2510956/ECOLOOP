@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create account — EcoLoop</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body>
+<div class="auth-page">
+  <section class="visual">
+    <div class="brand"><div class="brand-mark">♻</div>EcoLoop</div>
+    <div class="visual-copy">
+      <div class="kicker">Start your journey</div>
+      <h1>Your campus.<br><span>Your resources.</span></h1>
+      <p>Create an EcoLoop account and help useful resources move from one department to another instead of becoming waste.</p>
+    </div>
+    <img class="visual-photo" src="{{ url_for('static', filename='images/ecoloop-register.svg') }}" alt="EcoLoop campus resource reuse illustration">
+  <div class="visual-pills"><span class="visual-pill">♻ Share</span><span class="visual-pill">📦 Reuse</span><span class="visual-pill">🌱 Make an impact</span></div>
+  </section>
+  <section class="auth-panel">
+    <div class="form-wrap">
+      <div class="form-kicker">Create account</div>
+      <h2>Begin with EcoLoop</h2>
+      <p class="subtitle">A few details and you're ready to reuse.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}<div class="alert {{ category }}">{{ message }}</div>{% endfor %}
+      {% endwith %}
+      <form method="post">
+        <div class="field"><label for="name">Full name</label><input id="name" name="name" placeholder="Your name" required autocomplete="name"></div>
+        <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" required autocomplete="email"></div>
+        <div class="field"><label for="password">Create password</label><div class="input-wrap"><input id="password" name="password" type="password" minlength="6" placeholder="Create a password" required autocomplete="new-password"><button type="button" class="toggle" onclick="togglePassword('password',this)">Show</button></div></div>
+        <div class="field"><label for="confirm">Confirm password</label><div class="input-wrap"><input id="confirm" name="confirm" type="password" minlength="6" placeholder="Re-enter your password" required autocomplete="new-password"><button type="button" class="toggle" onclick="togglePassword('confirm',this)">Show</button></div></div>
+        <button class="btn" type="submit">Create my account&nbsp; →</button>
+      </form>
+      <div class="switch">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></div>
+    </div>
+  </section>
+</div>
+<script>
+function togglePassword(id,btn){const x=document.getElementById(id);const show=x.type==='password';x.type=show?'text':'password';btn.textContent=show?'Hide':'Show';}
+</script>
+</body>
+</html>

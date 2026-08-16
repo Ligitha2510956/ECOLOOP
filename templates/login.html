@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign in — EcoLoop</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body>
+<div class="auth-page">
+  <section class="visual">
+    <div class="brand"><div class="brand-mark">♻</div>EcoLoop</div>
+    <div class="visual-copy">
+      <div class="kicker">Campus reuse, connected</div>
+      <h1>Share more.<br><span>Waste less.</span></h1>
+      <p>Connect with students, departments and labs to reuse resources already available on campus.</p>
+    </div>
+    <img class="visual-photo" src="{{ url_for('static', filename='images/ecoloop-hero.svg') }}" alt="EcoLoop campus resource reuse illustration">
+  <div class="visual-pills"><span class="visual-pill">♻ Reuse resources</span><span class="visual-pill">🤝 Connect campus</span><span class="visual-pill">🌱 Reduce waste</span></div>
+  </section>
+  <section class="auth-panel">
+    <div class="form-wrap">
+      <div class="form-kicker">Welcome back</div>
+      <h2>Sign in to EcoLoop</h2>
+      <p class="subtitle">Continue making campus resources go further.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}<div class="alert {{ category }}">{{ message }}</div>{% endfor %}
+      {% endwith %}
+      <form method="post">
+        <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" placeholder="you@example.com" required autocomplete="email"></div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap"><input id="password" name="password" type="password" placeholder="Enter your password" required autocomplete="current-password"><button type="button" class="toggle" onclick="togglePassword('password',this)">Show</button></div>
+        </div>
+        <button class="btn" type="submit">Sign in&nbsp; →</button>
+      </form>
+      <div class="switch">New to EcoLoop? <a href="{{ url_for('register') }}">Create an account</a></div>
+    </div>
+  </section>
+</div>
+<script>
+function togglePassword(id,btn){const x=document.getElementById(id);const show=x.type==='password';x.type=show?'text':'password';btn.textContent=show?'Hide':'Show';}
+</script>
+</body>
+</html>

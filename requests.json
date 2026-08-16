@@ -1,0 +1,13 @@
+[
+  {
+    "request_id": "REQ-20260816105103-001",
+    "item_id": "EC-014",
+    "item_name": "Digital Microscope",
+    "department": "Biotechnology",
+    "pickup_date": "2026-08-12",
+    "requester_name": "Ligitha",
+    "requester_email": "ligitha@gamil.com",
+    "status": "Pending approval",
+    "created_at": "2026-08-16T10:51:03"
+  }
+]
