@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EcoLoop — Rewards & XP</title>
+<style>
+:root{--bg:#f6f8f5;--card:#fff;--ink:#18231d;--muted:#6c756f;--green:#2f7d50;--dark:#205a3a;--soft:#eaf4ed;--line:#dde5df;--amber:#c68a2e;--red:#b3492f}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+a{text-decoration:none;color:inherit}.wrap{max-width:1180px;margin:auto;padding:0 24px}.collegebar{background:var(--dark);color:#eff7f1;text-align:center;padding:7px 12px;font-size:12px}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}.navbar{max-width:1180px;margin:auto;padding:13px 24px;display:flex;align-items:center;gap:22px}
+.logo{font-weight:900;font-size:20px;color:var(--dark);display:flex;align-items:center;gap:10px}.crest{width:36px;height:36px;border-radius:11px;background:var(--green);color:#fff;display:grid;place-items:center}
+.nav{display:flex;gap:3px;flex:1}.nav a{padding:9px 12px;border-radius:9px;color:var(--muted);font-weight:750;font-size:13px}.nav a:hover,.nav a.active{background:var(--soft);color:var(--dark)}
+.account{display:flex;align-items:center;gap:10px}.avatar{width:36px;height:36px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-weight:900}
+.account-name{font-size:13px;font-weight:850}.account-email{font-size:11px;color:var(--muted)}.logout{font-size:12px;color:var(--red);font-weight:800;margin-left:8px}
+.page{padding:38px 0 60px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;color:var(--amber);font-size:11px;font-weight:900}.head h1{margin:6px 0;color:var(--dark);font-size:34px}.head p{color:var(--muted);font-size:14px}
+.hero{margin-top:22px;background:linear-gradient(135deg,#092216,#245f3d 58%,#7a9b47);border-radius:22px;color:#fff;padding:28px;position:relative;overflow:hidden}.hero:after{content:'✦ XP ✦';position:absolute;right:30px;top:22px;font-size:22px;font-weight:950;color:#d9f080}
+.hero h2{font-size:34px;margin:0}.hero p{color:#e4f2e8;margin-top:5px}.xp-row{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:end;margin-top:24px}.xp-num{font-size:46px;font-weight:950;line-height:1}.xp-label{font-size:12px;color:#d8e9dd;margin-top:4px}
+.xp-track{height:13px;background:#ffffff20;border-radius:99px;overflow:hidden;margin-top:15px}.xp-fill{height:100%;width:0;background:#d9f080;border-radius:99px}.level-name{font-weight:900;font-size:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}.panel h2{font-size:19px;color:var(--dark);margin:0}.sub{font-size:12px;color:var(--muted);margin-top:4px}
+.points-list{display:grid;gap:10px;margin-top:16px}.point-row{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:12px;padding:13px}
+.point-left{display:flex;align-items:center;gap:10px}.point-icon{width:34px;height:34px;border-radius:50%;background:var(--soft);display:grid;place-items:center}.point-row strong{font-size:13px}.point-row small{display:block;color:var(--muted);font-size:10px}.xp{font-weight:950;color:var(--dark)}
+.levels{display:grid;gap:8px;margin-top:15px}.level-row{display:grid;grid-template-columns:35px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.level-row:last-child{border-bottom:0}
+.badge{width:30px;height:30px;border-radius:50%;background:var(--soft);display:grid;place-items:center;color:var(--dark);font-weight:900}.level-row b{font-size:13px}.level-row span{font-size:10px;color:var(--muted)}.threshold{font-size:11px;font-weight:900;color:var(--amber)}
+.board{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}.board-head{padding:20px 22px;border-bottom:1px solid var(--line)}.board-head h2{margin:0;color:var(--dark);font-size:19px}.board-head p{font-size:12px;color:var(--muted);margin-top:4px}
+.row{display:grid;grid-template-columns:45px 1fr 100px;gap:12px;align-items:center;padding:15px 20px;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.rank{font-weight:950;color:var(--amber);font-size:16px}.who{font-weight:850;font-size:14px}.who small{display:block;color:var(--muted);font-size:10px;font-weight:500}.bar{height:7px;background:#edf1ee;border-radius:99px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--green);border-radius:99px}.row-points{text-align:right;font-size:13px;font-weight:950;color:var(--dark)}.me{background:#f0f8f2}
+.reward-note{margin-top:18px;padding:16px;border-radius:14px;background:var(--soft);border:1px solid #cfe3d5;color:var(--dark);font-size:12px}.status{margin-top:18px;padding:14px;border-radius:14px;background:#fff;border:1px solid var(--line);color:var(--muted);font-size:12px}.footer{text-align:center;color:var(--muted);font-size:12px;padding:24px;border-top:1px solid var(--line)}
+@media(max-width:850px){.nav{display:none}.account-email{display:none}.grid{grid-template-columns:1fr}.row{grid-template-columns:35px 1fr 80px}}@media(max-width:520px){.wrap{padding:0 16px}.navbar{padding:12px 16px}.account-name{display:none}.head h1{font-size:28px}.hero h2{font-size:27px}.xp-row{grid-template-columns:1fr}.xp-num{font-size:38px}}
+</style>
+</head>
+<body>
+<div class="collegebar">SSN College of Engineering · EcoLoop · SDG 12 Responsible Consumption</div>
+<header><div class="navbar">
+<a class="logo" href="{{ url_for('dashboard') }}"><span class="crest">♻</span>EcoLoop</a>
+<nav class="nav">
+<a href="{{ url_for('dashboard') }}">Home</a>
+<a href="{{ url_for('impact') }}">Impact</a>
+<a class="active" href="{{ url_for('rewards') }}">Rewards</a>
+<a href="{{ url_for('dashboard') }}#track">My Track</a>
+<a href="{{ url_for('dashboard') }}#feedback">Feedback</a>
+</nav>
+<div class="account"><div class="avatar">{{ user.name[:1]|upper }}</div><div><div class="account-name">{{ user.name }}</div><div class="account-email">{{ user.email }}</div></div><a class="logout" href="{{ url_for('logout') }}">Logout</a></div>
+</div></header>
+
+<main class="wrap page">
+<div class="head"><div class="eyebrow">Gamified reuse</div><h1>The EcoLoop XP system</h1><p>Good actions. Earn points. Reach a new level. Help your campus move toward zero waste.</p></div>
+
+<section class="hero">
+<div class="level-name" id="levelName">NEWCOMER</div>
+<h2 id="heroTitle">Your impact is just getting started.</h2>
+<p id="heroSub">Take an action and earn your first XP.</p>
+<div class="xp-row">
+<div><div class="xp-num" id="points">0 XP</div><div class="xp-label" id="nextText">Next level</div><div class="xp-track"><div class="xp-fill" id="xpFill"></div></div></div>
+<div style="text-align:right"><div style="font-size:12px;color:#d8e9dd">Actions</div><strong style="font-size:28px" id="actions">0</strong></div>
+</div>
+</section>
+
+<div class="grid">
+<section class="panel">
+<h2>How you earn XP</h2><p class="sub">Every real action on EcoLoop gives you points.</p>
+<div class="points-list">
+<div class="point-row"><div class="point-left"><div class="point-icon">♡</div><div><strong>Donate an item</strong><small>Give it away permanently</small></div></div><div class="xp">+50 XP</div></div>
+<div class="point-row"><div class="point-left"><div class="point-icon">↗</div><div><strong>Lend an item</strong><small>Share it and get it back later</small></div></div><div class="xp">+30 XP</div></div>
+<div class="point-row"><div class="point-left"><div class="point-icon">↘</div><div><strong>Borrow an item</strong><small>Reuse something already on campus</small></div></div><div class="xp">+20 XP</div></div>
+</div>
+<div class="reward-note">Points are tied to actual EcoLoop actions, so your XP grows when you contribute to reuse.</div>
+</section>
+
+<section class="panel">
+<h2>Levels & recognition</h2><p class="sub">Reach milestones and see your contribution grow.</p>
+<div class="levels">
+<div class="level-row"><div class="badge">1</div><div><b>Newcomer</b><span>Start making an impact</span></div><div class="threshold">0 XP</div></div>
+<div class="level-row"><div class="badge">2</div><div><b>Eco Starter</b><span>Keep the loop moving</span></div><div class="threshold">100 XP</div></div>
+<div class="level-row"><div class="badge">3</div><div><b>Resource Saver</b><span>Reducing campus waste</span></div><div class="threshold">250 XP</div></div>
+<div class="level-row"><div class="badge">4</div><div><b>Loop Champion</b><span>Strong campus contributor</span></div><div class="threshold">500 XP</div></div>
+<div class="level-row"><div class="badge">5</div><div><b>EcoLoop Hero</b><span>Leading the reuse movement</span></div><div class="threshold">1,000 XP</div></div>
+<div class="level-row"><div class="badge">6</div><div><b>Campus Legend</b><span>Top impact maker</span></div><div class="threshold">2,000 XP</div></div>
+</div>
+</section>
+</div>
+
+<section class="board">
+<div class="board-head"><h2>Campus leaderboard</h2><p>Every registered account appears here. Names and XP are calculated automatically from EcoLoop activity.</p></div>
+<div id="leaderboard"><div class="row"><div class="who">Loading leaderboard…</div></div></div>
+</section>
+
+<div class="status" id="status">Connecting to EcoLoop activity…</div>
+</main>
+<footer class="footer">EcoLoop · Earn impact, not waste</footer>
+
+<script>
+const CURRENT_EMAIL={{ user.email|tojson }};
+const levelNext={"Newcomer":"Eco Starter","Eco Starter":"Resource Saver","Resource Saver":"Loop Champion","Loop Champion":"EcoLoop Hero","EcoLoop Hero":"Campus Legend","Campus Legend":null};
+const previous={"Newcomer":0,"Eco Starter":100,"Resource Saver":250,"Loop Champion":500,"EcoLoop Hero":1000,"Campus Legend":2000};
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+
+async function loadRewards(){
+  const board=document.getElementById('leaderboard');
+  try{
+    const r=await fetch('/api/rewards',{credentials:'same-origin'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d=await r.json(),u=d.user||{},lb=d.leaderboard||[];
+    const points=Number(u.points||0),actions=Number(u.actions||0);
+    document.getElementById('points').textContent=points+' XP';
+    document.getElementById('actions').textContent=actions;
+    document.getElementById('levelName').textContent=(u.level||'Newcomer').toUpperCase();
+
+    if(u.next_threshold===null||u.next_threshold===undefined){
+      document.getElementById('heroTitle').textContent="You've reached the highest level!";
+      document.getElementById('heroSub').textContent="You are a Campus Legend.";
+      document.getElementById('nextText').textContent="Maximum level reached";
+      document.getElementById('xpFill').style.width='100%';
+    }else{
+      const next=levelNext[u.level]||'the next level',from=previous[u.level]??0,to=Number(u.next_threshold);
+      const pct=Math.max(0,Math.min(100,((points-from)/Math.max(1,to-from))*100));
+      document.getElementById('heroTitle').textContent=points?"You're building real campus impact.":"Your impact is just getting started.";
+      document.getElementById('heroSub').textContent=Math.max(0,to-points)+' XP to '+next;
+      document.getElementById('nextText').textContent='Next level: '+next;
+      document.getElementById('xpFill').style.width=pct+'%';
+    }
+
+    const max=Math.max(...lb.map(x=>Number(x.points||0)),1);
+    board.innerHTML=lb.length?lb.map(x=>{
+      const xp=Number(x.points||0),me=x.email===CURRENT_EMAIL;
+      return `<div class="row ${me?'me':''}"><div class="rank">${x.rank}</div><div><div class="who">${esc(x.name)} ${me?'<span style="color:var(--green)">(You)</span>':''}<small>${x.actions||0} actions · ${esc(x.level||'Newcomer')}</small></div><div class="bar"><i style="width:${(xp/max*100).toFixed(0)}%"></i></div></div><div class="row-points">${xp} XP</div></div>`;
+    }).join(''):'<div class="row"><div class="who">No registered accounts yet.</div></div>';
+
+    document.getElementById('status').textContent='✓ Rewards connected. XP and leaderboard update automatically.';
+  }catch(e){
+    console.error(e);
+    board.innerHTML='<div class="row"><div class="who">Could not load the leaderboard.</div></div>';
+    document.getElementById('status').textContent='Rewards could not connect. Make sure Flask is running and you are logged in.';
+  }
+}
+loadRewards();
+</script>
+</body>
+</html>

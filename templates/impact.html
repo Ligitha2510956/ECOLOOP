@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EcoLoop — Impact Board</title>
+<style>
+:root{--bg:#f6f8f5;--card:#fff;--ink:#18231d;--muted:#6c756f;--green:#2f7d50;--dark:#205a3a;--soft:#eaf4ed;--line:#dde5df;--amber:#c68a2e;--red:#b3492f}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink)}
+a{text-decoration:none;color:inherit}.wrap{max-width:1180px;margin:auto;padding:0 24px}
+.collegebar{background:var(--dark);color:#eff7f1;text-align:center;padding:7px 12px;font-size:12px}
+header{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.navbar{max-width:1180px;margin:auto;padding:13px 24px;display:flex;align-items:center;gap:22px}
+.logo{font-weight:900;font-size:20px;color:var(--dark);display:flex;align-items:center;gap:10px}.crest{width:36px;height:36px;border-radius:11px;background:var(--green);color:#fff;display:grid;place-items:center}
+.nav{display:flex;gap:3px;flex:1}.nav a{padding:9px 12px;border-radius:9px;color:var(--muted);font-weight:750;font-size:13px}.nav a:hover,.nav a.active{background:var(--soft);color:var(--dark)}
+.account{display:flex;align-items:center;gap:10px}.avatar{width:36px;height:36px;border-radius:50%;background:var(--dark);color:#fff;display:grid;place-items:center;font-weight:900}
+.account-name{font-size:13px;font-weight:850}.account-email{font-size:11px;color:var(--muted)}.logout{font-size:12px;color:var(--red);font-weight:800;margin-left:8px}
+.page{padding:38px 0 60px}.eyebrow{text-transform:uppercase;letter-spacing:.12em;color:var(--amber);font-size:11px;font-weight:900}
+.head h1{margin:6px 0;color:var(--dark);font-size:34px}.head p{color:var(--muted);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px}
+.stat .num{font-size:28px;font-weight:950;color:var(--dark)}.stat .label{font-size:12px;color:var(--muted);margin-top:2px}
+.grid2{display:grid;grid-template-columns:1.25fr .75fr;gap:18px;margin-top:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px}
+.panel h2{font-size:19px;color:var(--dark);margin:0}.panel .sub{font-size:12px;color:var(--muted);margin-top:4px}
+.action-bars{display:grid;gap:14px;margin-top:18px}.action-row{display:grid;grid-template-columns:105px 1fr 45px;gap:12px;align-items:center}
+.action-label{font-weight:800;font-size:13px}.track{height:10px;background:#edf1ee;border-radius:999px;overflow:hidden}.fill{height:100%;background:var(--green);border-radius:999px}
+.action-count{text-align:right;font-weight:900;color:var(--dark);font-size:13px}
+.my-impact{background:linear-gradient(135deg,#174f31,#3d8e5e);color:#fff;border-radius:18px;padding:24px}.my-impact h2{color:#fff}.my-impact .big{font-size:44px;font-weight:950;line-height:1}
+.level{margin-top:6px;color:#dff0e4;font-size:13px}.progress{height:10px;background:#ffffff25;border-radius:99px;overflow:hidden;margin-top:18px}.progress i{display:block;height:100%;background:#d8f0df;width:0}
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}.mini{background:#ffffff12;border:1px solid #ffffff24;border-radius:12px;padding:10px}.mini b{display:block;font-size:20px}.mini span{font-size:10px;color:#d8e8dc}
+.feed{margin-top:18px}.feed-row{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.feed-row:last-child{border-bottom:0}
+.feed-icon{width:34px;height:34px;border-radius:50%;background:var(--soft);display:grid;place-items:center}.feed-main{flex:1}.feed-main strong{font-size:13px}.feed-main p{font-size:11px;color:var(--muted);margin:2px 0 0}.points{font-size:12px;font-weight:900;color:var(--dark)}
+.note{margin-top:18px;background:var(--soft);border:1px solid #cfe3d5;border-radius:14px;padding:14px;font-size:12px;color:var(--dark)}
+.board{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}.board-head{padding:20px 22px;border-bottom:1px solid var(--line)}
+.board-head h2{margin:0;color:var(--dark);font-size:19px}.board-head p{font-size:12px;color:var(--muted);margin-top:4px}
+.leader-row{display:grid;grid-template-columns:45px 1fr 100px;gap:12px;align-items:center;padding:15px 20px;border-bottom:1px solid var(--line)}.leader-row:last-child{border-bottom:0}
+.rank{font-weight:950;color:var(--amber);font-size:16px}.leader-name{font-weight:850;font-size:14px}.leader-name small{display:block;color:var(--muted);font-size:10px;font-weight:500}
+.leader-bar{height:7px;background:#edf1ee;border-radius:99px;overflow:hidden;margin-top:6px}.leader-bar i{display:block;height:100%;background:var(--green);border-radius:99px}.leader-points{text-align:right;font-size:13px;font-weight:950;color:var(--dark)}
+.me{background:#f0f8f2}.status{margin-top:18px;padding:14px;border-radius:14px;background:#fff;border:1px solid var(--line);color:var(--muted);font-size:12px}
+.footer{text-align:center;color:var(--muted);font-size:12px;padding:24px;border-top:1px solid var(--line)}
+@media(max-width:850px){.nav{display:none}.account-email{display:none}.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.action-row{grid-template-columns:90px 1fr 35px}.leader-row{grid-template-columns:35px 1fr 80px}}
+@media(max-width:520px){.wrap{padding:0 16px}.stats{grid-template-columns:1fr}.navbar{padding:12px 16px}.account-name{display:none}.head h1{font-size:28px}}
+</style>
+</head>
+<body>
+<div class="collegebar">SSN College of Engineering · EcoLoop · SDG 12 Responsible Consumption</div>
+<header><div class="navbar">
+<a class="logo" href="{{ url_for('dashboard') }}"><span class="crest">♻</span>EcoLoop</a>
+<nav class="nav">
+<a href="{{ url_for('dashboard') }}">Home</a>
+<a href="{{ url_for('dashboard') }}#browse">Browse</a>
+<a class="active" href="{{ url_for('impact') }}">Impact</a>
+<a href="{{ url_for('rewards') }}">Rewards</a>
+<a href="{{ url_for('dashboard') }}#track">My Track</a>
+<a href="{{ url_for('dashboard') }}#feedback">Feedback</a>
+</nav>
+<div class="account"><div class="avatar">{{ user.name[:1]|upper }}</div><div><div class="account-name">{{ user.name }}</div><div class="account-email">{{ user.email }}</div></div><a class="logout" href="{{ url_for('logout') }}">Logout</a></div>
+</div></header>
+
+<main class="wrap page">
+<div class="head"><div class="eyebrow">Impact board</div><h1>Small actions, tracked in real numbers</h1><p>Every lend, donate and borrow action adds to the campus reuse story.</p></div>
+
+<section class="stats">
+<div class="stat"><div class="num" id="totalActions">0</div><div class="label">Reuse actions</div></div>
+<div class="stat"><div class="num" id="donated">0</div><div class="label">Items donated</div></div>
+<div class="stat"><div class="num" id="lended">0</div><div class="label">Items lent</div></div>
+<div class="stat"><div class="num" id="borrowed">0</div><div class="label">Items borrowed</div></div>
+</section>
+
+<div class="grid2">
+<section class="panel">
+<h2>Campus activity overview</h2><p class="sub">How the EcoLoop community is using the platform.</p>
+<div class="action-bars">
+<div class="action-row"><div class="action-label">Donate</div><div class="track"><div class="fill" id="barDonate"></div></div><div class="action-count" id="countDonate">0</div></div>
+<div class="action-row"><div class="action-label">Lend</div><div class="track"><div class="fill" id="barLend"></div></div><div class="action-count" id="countLend">0</div></div>
+<div class="action-row"><div class="action-label">Borrow</div><div class="track"><div class="fill" id="barBorrow"></div></div><div class="action-count" id="countBorrow">0</div></div>
+</div>
+<div class="note">This board is live. New lend, donate and borrow actions are reflected automatically.</div>
+</section>
+
+<section class="my-impact">
+<h2>My impact</h2>
+<div class="big" id="myPoints">0 XP</div>
+<div class="level" id="myLevel">Newcomer</div>
+<div class="progress"><i id="myProgress"></i></div>
+<div class="mini-grid">
+<div class="mini"><b id="myDonate">0</b><span>Donated</span></div>
+<div class="mini"><b id="myLend">0</b><span>Lent</span></div>
+<div class="mini"><b id="myBorrow">0</b><span>Borrowed</span></div>
+</div>
+</section>
+</div>
+
+<section class="panel" style="margin-top:18px">
+<h2>Recent campus activity</h2><p class="sub">Latest actions from all registered EcoLoop members.</p>
+<div class="feed" id="feed"><div class="feed-row"><div class="feed-main">Loading…</div></div></div>
+</section>
+
+<section class="board">
+<div class="board-head"><h2>Campus leaderboard</h2><p>Every registered account is included automatically. Rankings are based on XP earned from actual actions.</p></div>
+<div id="leaderboard"><div class="leader-row"><div class="leader-name">Loading leaderboard…</div></div></div>
+</section>
+
+<div class="status" id="status">Connecting to EcoLoop activity…</div>
+</main>
+
+<footer class="footer">EcoLoop · Reuse first · Waste less · Build a circular campus</footer>
+
+<script>
+const CURRENT_EMAIL = {{ user.email|tojson }};
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const icon=a=>a==='Donate'?'♡':a==='Lend'?'↗':'↘';
+
+async function loadImpact(){
+  try{
+    const r=await fetch('/api/impact',{credentials:'same-origin'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const d=await r.json();
+    const o=d.overview||{};
+    const u=d.user||{};
+    document.getElementById('totalActions').textContent=o.total_actions||0;
+    document.getElementById('donated').textContent=o.donated||0;
+    document.getElementById('lended').textContent=o.lended||0;
+    document.getElementById('borrowed').textContent=o.borrowed||0;
+
+    const max=Math.max(Number(o.donated||0),Number(o.lended||0),Number(o.borrowed||0),1);
+    [['Donate',o.donated],['Lend',o.lended],['Borrow',o.borrowed]].forEach(([a,n])=>{
+      document.getElementById('bar'+a).style.width=(Number(n||0)/max*100)+'%';
+      document.getElementById('count'+a).textContent=n||0;
+    });
+
+    document.getElementById('myPoints').textContent=(u.points||0)+' XP';
+    document.getElementById('myLevel').textContent=(u.level||'Newcomer')+' · '+(u.description||'');
+    document.getElementById('myDonate').textContent=u.donated||0;
+    document.getElementById('myLend').textContent=u.lended||0;
+    document.getElementById('myBorrow').textContent=u.borrowed||0;
+
+    const prev={'Newcomer':0,'Eco Starter':100,'Resource Saver':250,'Loop Champion':500,'EcoLoop Hero':1000,'Campus Legend':2000};
+    let pct=100;
+    if(u.next_threshold!==null && u.next_threshold!==undefined){
+      pct=Math.max(0,Math.min(100,((Number(u.points||0)-prev[u.level])/(Number(u.next_threshold)-prev[u.level]))*100));
+    }
+    document.getElementById('myProgress').style.width=pct+'%';
+
+    const feed=document.getElementById('feed');
+    const recent=d.recent||[];
+    feed.innerHTML=recent.length?recent.map(a=>`
+      <div class="feed-row">
+        <div class="feed-icon">${icon(a.action)}</div>
+        <div class="feed-main">
+          <strong>${esc(a.user_name)} ${esc(String(a.action||'').toLowerCase())}d ${esc(a.item_name)}</strong>
+          <p>${esc(a.category||'Campus resource')} · ${esc(a.created_at||'')}</p>
+        </div>
+        <div class="points">+${a.points} XP</div>
+      </div>`).join(''):'<div class="feed-row"><div class="feed-main">No activity yet. Be the first to make an impact.</div></div>';
+
+    const lb=d.leaderboard||[];
+    const maxPts=Math.max(...lb.map(x=>Number(x.points||0)),1);
+    const board=document.getElementById('leaderboard');
+    board.innerHTML=lb.length?lb.map(x=>`
+      <div class="leader-row ${x.email===CURRENT_EMAIL?'me':''}">
+        <div class="rank">${x.rank}</div>
+        <div>
+          <div class="leader-name">${esc(x.name)} ${x.email===CURRENT_EMAIL?'<span style="color:var(--green)">(You)</span>':''}
+            <small>${x.actions||0} actions · ${esc(x.level||'Newcomer')}</small>
+          </div>
+          <div class="leader-bar"><i style="width:${(Number(x.points||0)/maxPts*100).toFixed(0)}%"></i></div>
+        </div>
+        <div class="leader-points">${x.points||0} XP</div>
+      </div>`).join(''):'<div class="leader-row"><div class="leader-name">No registered accounts yet.</div></div>';
+
+    document.getElementById('status').textContent='✓ Impact connected. Data updates from EcoLoop activity automatically.';
+  }catch(e){
+    console.error(e);
+    document.getElementById('feed').innerHTML='<div class="feed-row"><div class="feed-main">Could not load the impact board.</div></div>';
+    document.getElementById('leaderboard').innerHTML='<div class="leader-row"><div class="leader-name">Could not load the leaderboard.</div></div>';
+    document.getElementById('status').textContent='Impact could not connect to the server. Make sure Flask is running and you are logged in.';
+  }
+}
+loadImpact();
+</script>
+</body>
+</html>
